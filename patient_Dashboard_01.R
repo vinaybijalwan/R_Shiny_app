@@ -35,7 +35,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   # Load data from the CSV file
   patient_data <- reactive({
-    data <- fread("JanJuly2023_04.csv")  # Replace with your file path if not in the working directory
+    data <- fread("JanAugust2023.csv")  # Replace with your file path if not in the working directory
     data$visit_date <- as.Date(data$visit_date)
     return(data)
   })
@@ -80,7 +80,7 @@ server <- function(input, output) {
   
   # Render a pie chart
   output$pie_chart <- renderPlot({
-    age_group_counts <- data[, .N, by = age_group]
+    age_group_counts <- filtered_data()[, .N, by = age_group]
     ggplot(age_group_counts, aes(x = "", y = N, fill = age_group)) +
       geom_bar(stat = "identity") +
       geom_text(aes(label = N), position = position_stack(vjust = 0.5)) +
